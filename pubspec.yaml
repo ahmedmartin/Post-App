@@ -27,7 +27,7 @@ dependencies:
   get_it: ^7.6.0
   # Remote API
   internet_connection_checker: ^1.0.0+1
-  # http: ^0.13.6
+  http: ^0.13.6
   dio: any
   # Local cache
   shared_preferences: ^2.1.1
@@ -35,7 +35,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  mockito:
+  mocktail:  
+  bloc_test: 
+  build_runner: 
   flutter_lints: ^2.0.1
 
 flutter:

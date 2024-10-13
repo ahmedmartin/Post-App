@@ -18,7 +18,6 @@ class PostsPage extends StatelessWidget {
     );
   }
 
-
   Widget _buildBody() {
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -31,7 +30,12 @@ class PostsPage extends StatelessWidget {
                 onRefresh: () => _onRefresh(context),
                 child: PostListWidget(posts: state.posts));
           } else if (state is ErrorPostsState) {
-            return MessageDisplayWidget(message: state.message);
+            return MessageDisplayWidget(
+              message: state.message,
+              onRetry: () {
+                _onRefresh(context);
+              },
+            );
           }
           return const LoadingWidget();
         },
@@ -42,5 +46,4 @@ class PostsPage extends StatelessWidget {
   Future<void> _onRefresh(BuildContext context) async {
     BlocProvider.of<PostsBloc>(context).add(RefreshPostsEvent());
   }
-
 }

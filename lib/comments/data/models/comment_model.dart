@@ -1,9 +1,8 @@
 import 'package:clean_architecture_posts_app/comments/domain/entities/comment.dart';
 
-
 class CommentModel extends Comment {
   const CommentModel({
-    int? id,
+    required int id,
     required String name,
     required String body,
     required int postId,
@@ -19,7 +18,12 @@ class CommentModel extends Comment {
         postId: json['postId']);
   }
 
-  // Map<String, dynamic> toJson() {
-  //   return {'id': id, 'name': title, 'body': body};
-  // }
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'name': name, 'body': body,'email':email,'postId':postId,};
+  }
+}
+
+extension MapToDomain on CommentModel {
+  Comment toDomain() =>
+      Comment(id: id, name: name, body: body, email: email, postId: postId);
 }

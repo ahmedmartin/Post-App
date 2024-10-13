@@ -1,3 +1,4 @@
+import 'package:clean_architecture_posts_app/comments/data/datasources/comments_local_data_source.dart';
 import 'package:clean_architecture_posts_app/comments/data/repositories/comment_repository_impl.dart';
 import 'package:clean_architecture_posts_app/comments/domain/repositories/comments_repository.dart';
 import 'package:clean_architecture_posts_app/comments/domain/usecases/get_all_comment_usecase.dart';
@@ -9,11 +10,13 @@ import 'package:clean_architecture_posts_app/posts/domain/usecases/get_all_posts
 import 'package:clean_architecture_posts_app/posts/domain/usecases/get_post_by_user_usecase.dart';
 import 'package:clean_architecture_posts_app/posts/presentation/bloc/post_by_user/post_by_user_cubit.dart';
 import 'package:clean_architecture_posts_app/users/data/datasources/user_remote_data_source.dart';
+import 'package:clean_architecture_posts_app/users/data/datasources/users_local_data_source.dart';
 import 'package:clean_architecture_posts_app/users/data/repositories/users_repository_impl.dart';
 import 'package:clean_architecture_posts_app/users/domain/repositories/users_repository.dart';
 import 'package:clean_architecture_posts_app/users/domain/usecases/get_user_by_id_usecase.dart';
 import 'package:clean_architecture_posts_app/users/presentation/bloc/user_by_id/user_by_id_cubit.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import 'core/network/network_info.dart';
 import 'posts/data/datasources/post_local_data_source.dart';
@@ -47,9 +50,9 @@ Future<void> init() async {
   sl.registerLazySingleton<PostsRepository>(() => PostsRepositoryImpl(
       remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
   sl.registerLazySingleton<CommentsRepository>(() => CommentsRepositoryImpl(
-      remoteDataSource: sl(), networkInfo: sl()));
+      remoteDataSource: sl(), localDataSource: sl(),networkInfo: sl()));
   sl.registerLazySingleton<UsersRepository>(() => UsersRepositoryImpl(
-      remoteDataSource: sl(), networkInfo: sl()));
+      remoteDataSource: sl(), localDataSource: sl(),networkInfo: sl()));
 
 // Datasources
 
@@ -59,8 +62,12 @@ Future<void> init() async {
       () => PostLocalDataSourceImpl(sharedPreferences: sl()));
   sl.registerLazySingleton<CommentsRemoteDataSource>(
       () => CommentsRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<CommentsLocalDataSource>(
+      () => CommentsLocalDataSourceImpl(sharedPreferences: sl()));
   sl.registerLazySingleton<UserRemoteDataSource>(
       () => UserRemoteDataSourceImpl(client: sl()));
+  sl.registerLazySingleton<UsersLocalDataSource>(
+      () => UsersLocalDataSourceImpl(sharedPreferences: sl()));
 
 //! Core
 
@@ -70,7 +77,7 @@ Future<void> init() async {
 
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
-  // sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => http.Client());
   sl.registerLazySingleton(() => Dio());
   sl.registerLazySingleton(() => InternetConnectionChecker());
 }

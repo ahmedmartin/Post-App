@@ -24,10 +24,3 @@ class CompanyModel extends Company {
   }
 }
 
-// extension MapToDomain on CompanyModel {
-//   Company toDomain() => Company(
-//         name: name,
-//         catchPhrase: catchPhrase,
-//         bs: bs,
-//       );
-// }

@@ -28,7 +28,7 @@ class _PostDetailWidgetState extends State<PostDetailWidget> {
   @override
   void initState() {
     commentsBloc = BlocProvider.of<CommentsBloc>(context);
-    commentsBloc.add(GetAllCommentsEvent());
+    commentsBloc.add(GetAllCommentsEvent(postId: widget.post.id.toString()));
     userByIdCubit = BlocProvider.of<UserByIdCubit>(context);
     userByIdCubit.getUserById(userId: widget.post.userId.toString());
     super.initState();
@@ -41,6 +41,7 @@ class _PostDetailWidgetState extends State<PostDetailWidget> {
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             BlocBuilder<UserByIdCubit, UserByIdState>(
               bloc: userByIdCubit,
@@ -108,7 +109,7 @@ class _PostDetailWidgetState extends State<PostDetailWidget> {
                   return const LoadingWidget();
                 } else if (state is ErrorCommentsState) {
                   return MessageDisplayWidget(message: state.message,onRetry: () {
-                    commentsBloc.add(GetAllCommentsEvent());
+                    commentsBloc.add(GetAllCommentsEvent(postId: widget.post.id.toString()));
                   },);
                 } else if (state is LoadedCommentsState) {
                   return SizedBox(
@@ -141,6 +142,6 @@ class _PostDetailWidgetState extends State<PostDetailWidget> {
   }
 
   Future<void> _onRefresh(BuildContext context) async {
-    BlocProvider.of<CommentsBloc>(context).add(RefreshCommentsEvent());
+    BlocProvider.of<CommentsBloc>(context).add(RefreshCommentsEvent(postId: widget.post.id.toString()));
   }
 }

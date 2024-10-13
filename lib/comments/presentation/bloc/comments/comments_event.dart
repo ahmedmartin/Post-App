@@ -7,6 +7,14 @@ abstract class CommentsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllCommentsEvent extends CommentsEvent {}
+class GetAllCommentsEvent extends CommentsEvent {
+  final String postId;
 
-class RefreshCommentsEvent extends CommentsEvent {}
+  const GetAllCommentsEvent({required this.postId});
+}
+
+class RefreshCommentsEvent extends CommentsEvent {
+  final String postId;
+
+  const RefreshCommentsEvent({required this.postId});
+}

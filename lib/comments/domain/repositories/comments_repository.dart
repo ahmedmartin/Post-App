@@ -5,5 +5,5 @@ import 'package:dartz/dartz.dart';
 import '../../../core/error/failures.dart';
 
 abstract class CommentsRepository {
-  Future<Either<Failure, List<Comment>>> getAllComments();
+  Future<Either<Failure, List<Comment>>> getAllComments({required String postId});
 }

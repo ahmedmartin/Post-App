@@ -84,7 +84,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             const Text(
               'User Posts',
               style: TextStyle(

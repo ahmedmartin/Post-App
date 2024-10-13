@@ -55,12 +55,18 @@ class PostsRepositoryImpl implements PostsRepository {
       try {
         final remotePosts =
             await remoteDataSource.getPostsByUserId(userId: userId);
+        localDataSource.cachePostsByUserId(remotePosts,userId);
         return Right(remotePosts);
       } on ServerException {
         return Left(ServerFailure());
       }
-    }else {
-      return Left(OfflineFailure()); 
+    } else {
+      try {
+        final localPosts = await localDataSource.getCachedPostsByUserId(userId);
+        return Right(localPosts);
+      } on EmptyCacheException {
+        return Left(EmptyCacheFailure());
+      }
     }
   }
 }

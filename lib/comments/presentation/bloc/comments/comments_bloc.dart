@@ -18,12 +18,12 @@ class CommentsBloc extends Bloc<CommentsEvent, CommentsState> {
       if (event is GetAllCommentsEvent) {
         emit(LoadingCommentsState());
 
-        final failureOrPosts = await getAllComments();
+        final failureOrPosts = await getAllComments(postId: event.postId);
         emit(_mapFailureOrPostsToState(failureOrPosts));
       } else if (event is RefreshCommentsEvent) {
         emit(LoadingCommentsState());
 
-        final failureOrPosts = await getAllComments();
+        final failureOrPosts = await getAllComments(postId: event.postId);
         emit(_mapFailureOrPostsToState(failureOrPosts));
       }
     });
